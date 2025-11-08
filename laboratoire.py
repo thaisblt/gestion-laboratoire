@@ -20,26 +20,6 @@ Partie réutilisable entre les différentes IHM.
 python labo_cmd.py add Xavier F305
 '''
 
-# Définir ce qu'est un laboratoire ? Quel type ?
-
-# Réponse : dictionnaire, clé = personne, valeur = bureau
-
-'''
-Evolution possible :
-    labo = {
-        'bureaux' : {
-            'F305': 4,
-            'F307': 2,
-        },
-        'affectations': {
-            'Xavier': 'F305',
-        }
-
-    }
-'''
-
-# Gérer un laboratoire 
-
 def laboratoire():
     """ Créer un nouveau laboratoire """
     return {}

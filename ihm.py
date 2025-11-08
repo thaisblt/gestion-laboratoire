@@ -7,6 +7,11 @@ Interface sur la labo avec menu textuel.
 '''
 
 def gerer_arrivee(labo):
+    """
+    Demander à l'utilisateur le nom du membre à ajouter et son bureau. 
+    Ajouter le membre au laboratoire.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     try:
         nom = input("Nom ? ")
         bureau = input("Bureau ? ")
@@ -16,6 +21,11 @@ def gerer_arrivee(labo):
         print(f"Impossible: {nom} est déjà présent.")
 
 def gerer_depart(labo) :
+    """
+    Demander à l'utilisateur le nom à supprimer. 
+    Puis supprimer le membre du laboratoire.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     try :
         nom = input("Nom ? ")
         laboratoire.enregistrer_depart(labo, nom)
@@ -24,6 +34,11 @@ def gerer_depart(labo) :
             print(f"Impossible : {nom} n'est pas présent.")
 
 def gerer_modifier_bureau(labo) :
+    """
+    Demander un nom à l'utilisateur puis le nouveau bureau à attribuer. 
+    Attribuer le nouveau bureau  au membre.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     try : 
         nom = input("Nom ? ")
         bureau = input("Nouveau bureau ? ")
@@ -33,6 +48,11 @@ def gerer_modifier_bureau(labo) :
             print(f"Impossible : {nom} n'est pas présent.")
 
 def gerer_changer_nom(labo) :
+    """
+    Demander un nom à l'utilisateur puis le nouveau nom à donner. 
+    Modifier l'ancien nom par le nouveau.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     try :
         nom = input("Nom à modifier ? ")
         nouveau_nom = input("Nouveau nom ? ")
@@ -42,7 +62,11 @@ def gerer_changer_nom(labo) :
         print(f"Impossible : {nom} n'est pas présent.")
 
 def gerer_est_present(labo) : 
-    """ """
+    """
+    Demander un nom à l'utilisateur et indiquer si ce membre est présent
+    dans le laboratoire ou non.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     nom = input("Nom ? ")
     if laboratoire.est_present(labo, nom) :
         print(f"{nom} est membre de ce laboratoire")
@@ -50,6 +74,10 @@ def gerer_est_present(labo) :
         print(f"{nom} n'est pas membre de ce laboratoire")
 
 def gerer_bureau(labo) :
+    """
+    Demander un nom à l'utilisateur et indiquer dans quel bureau se trouve ce membre
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     try :
         nom = input("Nom ? ")
         bureau = laboratoire.bureau(labo, nom)
@@ -57,21 +85,29 @@ def gerer_bureau(labo) :
     except laboratoire.AbsentException : 
         print(f"Impossible : {nom} n'est pas présent.") 
 
-
-# Afficher la liste de tous les membres du laboratoire et leurs bureaux
 def liste_du_personnel(labo) :  
+    """
+    Afficher la liste de tous les membres du laboratoire et leurs bureaux
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     for nom, bureau in labo.items() : 
        print(f"{nom : <8} : {bureau}")  
 
-# Afficher les bureaux et la liste de leurs occupants
 def gerer_occupation_bureau(labo) : 
+    """
+    Afficher les bureaux et la liste de leurs occupants
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     dans_bureau = laboratoire.occupation_bureau(labo)
     for bureau, occupants in sorted(dans_bureau.items()) :
         print(f"{bureau} :")
         print("\n".join(occupants))
     
 def gerer_occupation_bureau_html(labo):
-    # Ecrire le contenue HTML dans le fichier .html
+    """
+    Créer le fichier html et écrire le contenu HTML dedans.
+    param labo : dictionnaire contenant les membres et leurs bureaux.
+    """
     nom_fichier = 'occupations_bureaux.html'
     contenu_html = laboratoire.occupation_bureau_html(labo)
     with open(nom_fichier, 'w', encoding="utf-8") as fichier:
@@ -79,7 +115,11 @@ def gerer_occupation_bureau_html(labo):
     print("Le fichier occupation_bureaux.html à été créé.")
 
 def charger_donnees():
-    """ Convertir les données. Retourne le dictionnaire laboratoire et ses données"""
+    """
+    Charger les données du laboratoire depuis le fichier JSON.
+    Retourne un dictionnaire contenant les membres et leurs bureaux.
+    Si le fichier est vide ou inexistant, retourne un dictionnaire vide.
+    """
     nom_fichier = 'donnees_labo.json'
     try:
         with open(nom_fichier, "r", encoding="utf-8") as fichier:
@@ -88,11 +128,20 @@ def charger_donnees():
         return {}
 
 def sauvegarder_donnees(labo):
+    """
+    Sauvegarder les données du laboratoire dans le fichier JSON.
+    param labo : le dictionnaire contenant les membres et leurs bureaux à enregistrer.
+    """
     with open("donnees_labo.json", "w", encoding="utf-8") as fichier:
         json.dump(labo, fichier)
 
-# fusionner les donnees sans doublons
 def gerer_importer_donnees_csv(labo):
+    """
+    Demander à l'utilisateur un nom de fichier CSV puis l'importer
+    Signaler les conflits éventuels, puis fusionner les nouvelles données
+    avec celles déjà présentes dans le laboratoire.
+    param labo : dictionnaire à mettre à jour.
+    """
     nom_fichier_csv = input("Nom du fichier csv à importer ? ")
 
     try:
@@ -113,7 +162,7 @@ def gerer_importer_donnees_csv(labo):
 
 
 def main():
-    """labo = laboratoire.laboratoire()"""
+
     labo = charger_donnees()
     menu = menus.nouveau_menu()
     menus.ajouter_choix(menu, "Enregistrer une arrivée", gerer_arrivee, labo)
@@ -128,18 +177,6 @@ def main():
     menus.ajouter_choix(menu, "Importer de nouvelles données (format csv)", gerer_importer_donnees_csv, labo)
     menus.gerer_menu(menu)
     sauvegarder_donnees(labo)
-
-
-    """
-    quitter = False
-    labo = laboratoire.laboratoire()
-    while not quitter:
-        afficher_menu()
-        choix = demander_choix()
-        traiter_choix(choix, labo)
-        print(labo)
-        quitter = choix == 0
-    """
 
 
 if __name__ == '__main__':
