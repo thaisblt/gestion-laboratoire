@@ -1,3 +1,5 @@
+import csv
+
 class LaboException(Exception):
     """ Généralise les exceptions du laboratoire."""
     pass
@@ -114,6 +116,33 @@ def occupation_bureau_html(labo) :
         contenu_html.append("</ul>")    
     contenu_html.append("</body></html>")
     return contenu_html
+
+def importer_donnees_csv(labo, nom_fichier_csv):
+    """ Importer et convertir des données csv. 
+        Retourne un dictionaire des nouvelles données 
+        et une liste des conflits entre les 2 sources de données """
+    
+    # Convertir csv en dictionnaire
+    nouvelles_donnees = {}
+    with open(nom_fichier_csv ,"r", encoding="utf-8") as fichier:
+        lecteur_csv = csv.DictReader(fichier)
+        for ligne in lecteur_csv:
+            nom = ligne["nom"]
+            bureau = ligne["bureau"]
+            nouvelles_donnees[nom] = bureau
+    
+    # lister les doublons
+    doublons_conflits = []
+    for nom, bureau in nouvelles_donnees.items():
+        if nom in labo and labo[nom] != bureau:
+            doublons_conflits.append(nom)
+
+    # Supprimer les doublons
+    for nom in doublons_conflits:    
+        del nouvelles_donnees[nom]            
+
+    return nouvelles_donnees, doublons_conflits
+
 
 # Les opérations qui permettent de manipuler les données du labo.
 

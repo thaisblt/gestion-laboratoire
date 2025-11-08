@@ -78,7 +78,7 @@ def gerer_occupation_bureau_html(labo):
         fichier.write('\n'.join(contenu_html))
     print("Le fichier occupation_bureaux.html à été créé.")
 
-def importer_donnees():
+def charger_donnees():
     """ Convertir les données. Retourne le dictionnaire laboratoire et ses données"""
     nom_fichier = 'donnees_labo.json'
     try:
@@ -87,13 +87,34 @@ def importer_donnees():
     except json.JSONDecodeError:
         return {}
 
-def enregistrer_donnees(labo):
+def sauvegarder_donnees(labo):
     with open("donnees_labo.json", "w", encoding="utf-8") as fichier:
         json.dump(labo, fichier)
 
+# fusionner les donnees sans doublons
+def gerer_importer_donnees_csv(labo):
+    nom_fichier_csv = input("Nom du fichier csv à importer ? ")
+
+    try:
+        nouvelles_donnees, doublons_conflits = laboratoire.importer_donnees_csv(labo, nom_fichier_csv)
+    except FileNotFoundError :
+        print("Fichier introuvable")
+        return
+    
+    # Afficher les doublons avec des bureaux différents
+    for nom in doublons_conflits:
+        print(f"- {nom} déjà enregistré dans un bureau différent")
+    print()
+
+    # Fusionner les données csv avec celle du laboratoire
+    labo.update(nouvelles_donnees)
+    print("Les données ont bien été mises à jour")
+    print()
+
+
 def main():
     """labo = laboratoire.laboratoire()"""
-    labo = importer_donnees()
+    labo = charger_donnees()
     menu = menus.nouveau_menu()
     menus.ajouter_choix(menu, "Enregistrer une arrivée", gerer_arrivee, labo)
     menus.ajouter_choix(menu, "Enregistrer un départ", gerer_depart, labo)
@@ -104,8 +125,9 @@ def main():
     menus.ajouter_choix(menu, "Afficher la liste des membres avec le bureau occupé", liste_du_personnel, labo)
     menus.ajouter_choix(menu, "Afficher l'occupation des bureaux", gerer_occupation_bureau, labo)
     menus.ajouter_choix(menu, "Afficher l'occupation des bureaux (exportation au format HTML)", gerer_occupation_bureau_html, labo)
+    menus.ajouter_choix(menu, "Importer de nouvelles données (format csv)", gerer_importer_donnees_csv, labo)
     menus.gerer_menu(menu)
-    enregistrer_donnees(labo)
+    sauvegarder_donnees(labo)
 
 
     """
