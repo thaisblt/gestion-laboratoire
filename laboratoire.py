@@ -5,11 +5,11 @@ class LaboException(Exception):
     pass
 
 class PresentException(LaboException) :
-    """ """
+    """ Retourne une exception si un membre en paramêtre est déjà présent"""
     pass
 
 class AbsentException(LaboException) : 
-    """ """
+    """ Retourne une exception si un membre en paramêtre n'est pas présent"""
     pass
 
 '''
