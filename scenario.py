@@ -14,7 +14,7 @@ def main():
     print()
 
     # Afficher la liste du personnel
-    laboratoire.liste_du_personnel(labo)
+    ihm.liste_du_personnel(labo)
     print()
 
     # Vérifier si présent
