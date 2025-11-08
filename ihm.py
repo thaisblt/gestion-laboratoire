@@ -1,5 +1,6 @@
 import laboratoire
 import menus
+import json
 
 '''
 Interface sur la labo avec menu textuel.
@@ -73,12 +74,26 @@ def gerer_occupation_bureau_html(labo):
     # Ecrire le contenue HTML dans le fichier .html
     nom_fichier = 'occupations_bureaux.html'
     contenu_html = laboratoire.occupation_bureau_html(labo)
-    with open(nom_fichier, 'w') as fichier:
+    with open(nom_fichier, 'w', encoding="utf-8") as fichier:
         fichier.write('\n'.join(contenu_html))
     print("Le fichier occupation_bureaux.html à été créé.")
 
+def importer_donnees():
+    """ Convertir les données. Retourne le dictionnaire laboratoire et ses données"""
+    nom_fichier = 'donnees_labo.json'
+    try:
+        with open(nom_fichier, "r", encoding="utf-8") as fichier:
+            return json.load(fichier)
+    except json.JSONDecodeError:
+        return {}
+
+def enregistrer_donnees(labo):
+    with open("donnees_labo.json", "w", encoding="utf-8") as fichier:
+        json.dump(labo, fichier)
+
 def main():
-    labo = laboratoire.laboratoire()
+    """labo = laboratoire.laboratoire()"""
+    labo = importer_donnees()
     menu = menus.nouveau_menu()
     menus.ajouter_choix(menu, "Enregistrer une arrivée", gerer_arrivee, labo)
     menus.ajouter_choix(menu, "Enregistrer un départ", gerer_depart, labo)
@@ -90,6 +105,7 @@ def main():
     menus.ajouter_choix(menu, "Afficher l'occupation des bureaux", gerer_occupation_bureau, labo)
     menus.ajouter_choix(menu, "Afficher l'occupation des bureaux (exportation au format HTML)", gerer_occupation_bureau_html, labo)
     menus.gerer_menu(menu)
+    enregistrer_donnees(labo)
 
 
     """
