@@ -3,7 +3,7 @@ import menus
 import json
 
 '''
-Interface sur la labo avec menu textuel.
+Interface sur le laboratoire avec menu textuel.
 '''
 
 def gerer_arrivee(labo):
