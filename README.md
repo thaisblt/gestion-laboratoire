@@ -24,3 +24,5 @@ Lorsque l'importation est lancée :
 Sauvegarde des données :
   - Toutes les modifications sont sauvegardées dans le fichier donnees_labo.json
   - Ce fichier est créé automatiquement si nécessaire.
+
+L'interface dans le terminal propose un menu pour accéder aux différentes fonctionnalités.
