@@ -152,7 +152,7 @@ def gerer_importer_donnees_csv(labo):
     
     # Afficher les doublons avec des bureaux différents
     for nom in doublons_conflits:
-        print(f"- {nom} déjà enregistré dans un bureau différent")
+        print(f"- {nom} est déjà enregistré dans un bureau différent - Ancien bureau conservé - Modifiez son bureau si nécéssaire")
     print()
 
     # Fusionner les données csv avec celle du laboratoire
