@@ -124,7 +124,7 @@ def charger_donnees():
     try:
         with open(nom_fichier, "r", encoding="utf-8") as fichier:
             return json.load(fichier)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, FileNotFoundError):
         return {}
 
 def sauvegarder_donnees(labo):
